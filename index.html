@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="依據《盜夢都市：精裝合集》規則整理製作的可解釋 RAG 問答助手。">
+  <title>盜夢都市規則問答助手</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <div class="brand-group">
+        <svg class="vault-mark" viewBox="0 0 72 72" aria-hidden="true">
+          <path d="M12 59V32C12 17.6 22.7 8 36 8s24 9.6 24 24v27" />
+          <path d="M19 59V33c0-10.9 7.1-18 17-18s17 7.1 17 18v26" />
+          <path d="M7 59h58M4 65h64" />
+          <circle cx="36" cy="34" r="5" class="vault-key" />
+          <path d="M36 39v9" class="vault-key" />
+        </svg>
+        <div>
+          <h1>盜夢都市規則問答助手</h1>
+          <p>依據《精裝合集》規則整理，從知識庫檢索後回答。</p>
+        </div>
+      </div>
+
+      <div class="depth-lines" aria-label="四層夢境">
+        <span><i></i>第 1 層・現實</span>
+        <span><i></i>第 2 層・街區</span>
+        <span><i></i>第 3 層・核心</span>
+        <span class="is-deep"><i></i>第 4 層・深夢</span>
+      </div>
+    </div>
+  </header>
+
+  <main class="app-shell">
+    <aside class="dream-rail" aria-label="夢境層級索引">
+      <h2>夢境層級</h2>
+      <ol>
+        <li class="is-current"><span></span>第 1 層<br>現實</li>
+        <li><span></span>第 2 層<br>街區</li>
+        <li><span></span>第 3 層<br>核心</li>
+        <li><span></span>第 4 層<br>深夢</li>
+      </ol>
+    </aside>
+
+    <div class="workspace">
+      <section class="query-section" aria-labelledby="query-heading">
+        <h2 id="query-heading" class="visually-hidden">詢問規則</h2>
+        <form id="question-form" class="question-form">
+          <div class="field-wrap">
+            <label for="question-input">輸入你的規則問題</label>
+            <textarea id="question-input" name="question" rows="3" maxlength="500" placeholder="輸入規則問題，例如：玩家死亡後怎麼復活？" required></textarea>
+            <span class="input-hint">Enter 查詢・Shift + Enter 換行</span>
+          </div>
+          <button id="ask-button" class="ask-button" type="submit">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"></circle><path d="m15.5 15.5 5 5"></path></svg>
+            查詢規則
+          </button>
+        </form>
+
+        <div class="common-block">
+          <h3>常見問題</h3>
+          <div id="common-questions" class="common-questions" aria-label="常見規則問題"></div>
+        </div>
+      </section>
+
+      <section class="result-section" aria-labelledby="result-question">
+        <div class="answer-column">
+          <div class="question-title-row">
+            <span class="question-letter" aria-hidden="true">Q</span>
+            <h2 id="result-question" tabindex="-1">玩家死亡後怎麼復活？</h2>
+          </div>
+
+          <article id="answer-panel" class="answer-panel" aria-live="polite" aria-atomic="true">
+            <p id="status-text" class="answer-status" data-status="idle">尚未查詢</p>
+            <p id="answer-text" class="answer-text">選擇常見問題，或輸入你想查詢的《盜夢都市》規則。</p>
+          </article>
+        </div>
+
+        <section class="retrieval-column" aria-labelledby="retrieval-heading">
+          <div class="retrieval-heading-row">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="10" width="14" height="11" rx="2"></rect><path d="M8 10V7a4 4 0 0 1 8 0v3"></path></svg>
+            <div>
+              <h2 id="retrieval-heading">檢索依據（Top 3）</h2>
+              <p>由知識庫取回最相關的規則片段，按文字相似度排序。</p>
+            </div>
+          </div>
+          <div id="retrieval-list" class="retrieval-list" aria-live="polite">
+            <p class="retrieval-empty">送出問題後，這裡會顯示前三筆檢索結果。</p>
+          </div>
+        </section>
+      </section>
+    </div>
+  </main>
+
+  <footer class="source-band">
+    <div class="source-inner">
+      <section>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"></circle><path d="m15.5 15.5 5 5"></path></svg>
+        <div><h2>檢索方式：瀏覽器內文字相似度</h2><p>問題與規則片段在本機比對，只依取回內容回答並附上來源。</p></div>
+      </section>
+      <section>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><ellipse cx="12" cy="5" rx="8" ry="3"></ellipse><path d="M4 5v7c0 1.7 3.6 3 8 3s8-1.3 8-3V5M4 12v7c0 1.7 3.6 3 8 3s8-1.3 8-3v-7"></path></svg>
+        <div><h2>知識庫：30 筆</h2><p>由六頁規則整理切分為可檢索的單一規則片段。</p></div>
+      </section>
+      <section>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 5.5A3.5 3.5 0 0 1 6.5 2H11v18H6.5A3.5 3.5 0 0 0 3 23ZM21 5.5A3.5 3.5 0 0 0 17.5 2H13v18h4.5A3.5 3.5 0 0 1 21 23Z"></path></svg>
+        <div><h2>來源與版本</h2><p>依《盜夢都市・精裝合集》規則整理；爭議以盒內說明書及卡面為準。</p></div>
+      </section>
+    </div>
+  </footer>
+
+  <template id="retrieval-item-template">
+    <article class="retrieval-item">
+      <div class="retrieval-summary">
+        <span class="rank"></span>
+        <div class="score-block">
+          <div class="score-label"><strong>相似度（信心值）</strong><b class="confidence"></b></div>
+          <div class="score-track" aria-hidden="true"><i></i></div>
+        </div>
+      </div>
+      <p class="source-meta"></p>
+      <p class="matched-terms"></p>
+      <details>
+        <summary>查看原文</summary>
+        <p class="source-text"></p>
+      </details>
+    </article>
+  </template>
+
+  <script src="knowledge-base.js" defer></script>
+  <script src="rag-engine.js" defer></script>
+  <script src="app.js" defer></script>
+</body>
+</html>
+
